@@ -2,20 +2,25 @@
 
 @section('main-content')
     <div class="w-75 d-flex flex-column">
+        @if (session('delete'))
+            <div class="allert allert-success">
+                {{ session('delete') }}
+            </div>
+        @endif
         @forelse ($books as $book)
             <div class="row">
                 <h3>
-                    Title: {{ $books->title }}
+                    Title: {{ $book->title }}
                 </h3>
                 <h5>
-                    Author: {{ $books->author }}
+                    Author: {{ $book->author }}
                 </h5>
-                <p>{{ $books->description }}</p>
-                <span>Price: {{ $books->price }}</span>
+                <p>{{ $book->description }}</p>
+                <span>Price: {{ $book->price }}</span>
                 <div class="actions">
-                    <button>Show</button>
-                    <button>Modify</button>
-                    <button>Delete</button>
+                    <a href="{{ route('book.show', $book->id) }}">Show</a>
+                    <a href="{{ route('book.edit', $book->id) }}">Modify</a>
+                    <a href="{{ route('book.destroy', $book->id) }}">Delete</a>
                 </div>
             </div>
         @empty

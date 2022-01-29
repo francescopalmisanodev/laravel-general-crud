@@ -36,7 +36,15 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $newBook = new Book();
+        $newBook->title = $data['title'];
+        $newBook->author = $data['author'];
+        $newBook->description = $data['description'];
+        $newBook->price = $data['price'];
+
+        $newBook->save();
+        return redirect()->route('book.show', $newBook->id);
     }
 
     /**
@@ -45,9 +53,9 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Book $book)
     {
-        //
+        return view('books.show', compact('book'));
     }
 
     /**
@@ -56,9 +64,9 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Book $book)
     {
-        //
+        return view('books.edit', compact('book'));
     }
 
     /**
@@ -70,7 +78,10 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $book = Book::find($id);
+        $book->update($data);
+        return redirect()->route('book.show', $book->id);
     }
 
     /**
@@ -81,6 +92,8 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $book = Book::find($id);
+        $book->delete();
+        return redirect()->route('book.index')->with("delete", "libro eliminato correttamente");
     }
 }
